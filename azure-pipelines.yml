@@ -1,0 +1,70 @@
+trigger:
+- master
+    
+pool:
+  vmImage: 'vs2017-win2016'
+
+variables:
+  status: 'fail'
+
+steps:
+- checkout: self
+  persistCredentials: "true"
+
+- powershell: (new-object System.Net.WebClient).DownloadFile('http://www.nespowerpak.com/nesasm/NESASM3.zip','NESASM3.zip')
+  displayName: 'Download NESASM3 for Windows'
+
+- task: ExtractFiles@1
+  displayName: 'Extract files'
+  inputs:
+    archiveFilePatterns: NESASM3.zip
+    destinationFolder: NESASM3
+
+- task: Bash@3
+  displayName: 'Check build folder'
+  inputs:
+    targetType: 'inline'
+    script: 'cd build && ls'
+
+- task: CmdLine@2
+  displayName: 'Assemble source file (.NES ROM)'
+  inputs:
+    script: 'D:\a\1\s\NESASM3\NESASM3.exe D:\a\1\s\w2.asm'
+
+- task: Bash@3
+  displayName: 'Check assembly status'
+  inputs:
+    targetType: 'inline'
+    script: |
+      result=$(D:/a/1/s/NESASM3/NESASM3.exe D:/a/1/s/w2.asm | grep error)
+      echo $result
+      echo "##vso[task.setvariable variable=status]$result"
+      
+- task: Bash@3
+  displayName: 'Fail build only if assembly fails'
+  inputs:
+    targetType: 'inline'
+    script: exit 1
+  condition: contains(variables['status'], 'error')
+
+- powershell: (new-object System.Net.WebClient).DownloadFile('https://downloads.sourceforge.net/project/fceultra/Binaries/2.2.3/fceux-2.2.3-win32.zip?r=https%3A%2F%2Fsourceforge.net%2Fprojects%2Ffceultra%2Ffiles%2FBinaries%2F2.2.3%2Ffceux-2.2.3-win32.zip%2Fdownload&ts=1559878465','FCEUX.zip')
+  displayName: 'Download FCEUX for Windows'
+
+- task: ExtractFiles@1
+  displayName: 'Extract files'
+  inputs:
+    archiveFilePatterns: FCEUX.zip
+    destinationFolder: build/fceux
+    cleanDestinationFolder: false
+
+- powershell: Start-Process D:\a\1\s\build\fceux\fceux.exe "-lua D:\a\1\s\build\screenshot.lua D:\a\1\s\w2.nes"
+  displayName: 'Run FCEUX'
+
+- task: AzureFileCopy@3
+  inputs:
+    SourcePath: '$(Build.Repository.LocalPath)/build/screenshot.png'
+    azureSubscription: 'Visual Studio Enterprise(dc8562fb-eaf4-4558-a222-ee41d1d94c94)'
+    Destination: 'AzureBlob'
+    storage: 'w2blob'
+    ContainerName: 'w2container'
+    outputStorageUri: 'https://w2blob.blob.core.windows.net/w2container'
