@@ -66,7 +66,7 @@ steps:
   displayName: 'Confirm screenshot was created'
   inputs:
     targetType: 'inline'
-    script: sleep 20 && cd D:/a/1/s/build && ls && cat screenshot.png
+    script: sleep 15 && cd D:/a/1/s/build && ls && cat screenshot.png
 
 - task: Bash@3
   displayName: 'Configure git'
@@ -81,8 +81,17 @@ steps:
     script: 'rm NESASM3.zip FCEUX.zip build/fceux/7z.dll build/fceux/auxlib.lua build/fceux/fceux.chm build/fceux/fceux.exe build/fceux/lua5.1.dll build/fceux/lua51.dll build/fceux/taseditor.chm && rm -rf build/fceux/luaScripts/ build/fceux/palettes/ build/fceux/tools/ NESASM3 && ls && cd build && ls'
 
 - task: Bash@3
-  displayName: 'Push ROM and screenshot back to branch'
+  displayName: 'Update readme.md'
   inputs:
     targetType: 'inline'
-    script: cd D:/a/1/s/ && ls && git add --all && git commit -m "Adds ROM and screenshot from build pipeline [skip ci]." && git push origin HEAD:master
+    script: |
+      current_date=echo `date +"%D %T"`
+      sed -i '/Screenshot/c\Screenshot current as of "$current_date".' readme.md
+  continueOnError: true
+
+- task: Bash@3
+  displayName: 'Push ROM, screenshot, and README back to branch'
+  inputs:
+    targetType: 'inline'
+    script: cd D:/a/1/s/ && ls && git add --all && git commit -m "Adds latest ROM, screenshot, and README from build pipeline." && git push origin HEAD:master
   continueOnError: true
