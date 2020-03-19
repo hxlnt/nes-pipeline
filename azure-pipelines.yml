@@ -86,7 +86,7 @@ steps:
     targetType: 'inline'
     script: |
       current_date=echo `date +"%D %T"`
-      sed -i '/Screenshot/c\Screenshot current as of "$current_date".' readme.md
+      sed -i '/Screenshot/c\Screenshot current as of $current_date.' readme.md
   continueOnError: true
 
 - task: Bash@3
