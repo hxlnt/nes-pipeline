@@ -11,6 +11,16 @@ steps:
 - checkout: self
   persistCredentials: "true"
 
+- task: Bash@3
+  displayName: 'Check Build.SourceVersionMessage'
+  env:
+    commitmsg: $(Build.SourceVersionMessage)
+  inputs:
+    targetType: 'inline'
+    script: |
+      echo $env:commitmsg
+      echo $(Build.SourceVersionMessage)
+
 - powershell: (new-object System.Net.WebClient).DownloadFile('http://www.nespowerpak.com/nesasm/NESASM3.zip','NESASM3.zip')
   displayName: 'Download NESASM3 for Windows'
   condition: not(contains(variables['Build.SourceVersionMessage'], '[skip ci]'))
@@ -92,10 +102,8 @@ steps:
 
 - task: Bash@3
   displayName: 'Push screenshot back to branch'
-  env:
-    PRBRANCH: $(System.PullRequest.SourceBranch)
   inputs:
     targetType: 'inline'
-    script: cd D:/a/1/s/ && ls && git add --all && git commit -m "Adds screenshot from build pipeline [skip ci]." && git push origin HEAD:master
+    script: cd D:/a/1/s/ && ls && git add --all && git commit -m "Adds ROM and screenshot from build pipeline [skip ci]." && git push origin HEAD:master
   condition: not(contains(variables['Build.SourceVersionMessage'], '[skip ci]'))
   continueOnError: true
