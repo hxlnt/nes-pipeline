@@ -86,7 +86,7 @@ steps:
     targetType: 'inline'
     script: |
       current_date=echo `date +"%D %T"`
-      sed '6i"$current_date"' readme.md
+      sed '6i"Updated $current_date"' readme.md
       cat readme.md
 
 - task: Bash@3
