@@ -33,7 +33,7 @@ steps:
 - task: CmdLine@2
   displayName: 'Assemble source file (.NES ROM)'
   inputs:
-    script: 'D:\a\1\s\NESASM3\NESASM3.exe D:\a\1\s\game\test.asm'
+    script: 'cd D:\a\1\s\game && D:\a\1\s\NESASM3\NESASM3.exe D:\a\1\s\game\test.asm'
   condition: not(contains(variables['Build.SourceVersionMessage'], '[skip ci]'))
 
 - task: Bash@3
