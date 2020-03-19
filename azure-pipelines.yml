@@ -96,6 +96,6 @@ steps:
     PRBRANCH: $(System.PullRequest.SourceBranch)
   inputs:
     targetType: 'inline'
-    script: echo $PRBRANCH && cd D:/a/1/s/ && ls && git add --all && git commit -m "Adds screenshot from build pipeline [skip ci]." && git push origin HEAD:$PRBRANCH
+    script: cd D:/a/1/s/ && ls && git add --all && git commit -m "Adds screenshot from build pipeline [skip ci]." && git push origin master
   condition: not(contains(variables['Build.SourceVersionMessage'], '[skip ci]'))
   continueOnError: true
