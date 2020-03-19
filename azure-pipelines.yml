@@ -41,7 +41,7 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      result=$(D:/a/1/s/NESASM3/NESASM3.exe D:/a/1/s/game/test.asm | grep error)
+      result=$(cd D:/a/1/s/game && D:/a/1/s/NESASM3/NESASM3.exe D:/a/1/s/game/test.asm | grep error)
       echo $result
       echo "##vso[task.setvariable variable=status]$result"
   condition: not(contains(variables['Build.SourceVersionMessage'], '[skip ci]'))
