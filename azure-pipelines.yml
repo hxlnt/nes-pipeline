@@ -86,8 +86,8 @@ steps:
     targetType: 'inline'
     script: |
       current_date=echo `date +"%D %T"`
-      sed 's/Screenshot/Screenshot current as of/' readme.md
-      sed a/$current_date readme.md
+      sed '6iline $current_date' readme.md
+      cat readme.md
 
 - task: Bash@3
   displayName: 'Push ROM, screenshot, and README back to branch'
