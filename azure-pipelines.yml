@@ -73,7 +73,7 @@ steps:
   displayName: 'Confirm screenshot was created'
   inputs:
     targetType: 'inline'
-    script: sleep 30 && cd D:/a/1/s/build && ls && cat screenshot.png
+    script: sleep 20 && cd D:/a/1/s/build && ls && cat screenshot.png
   condition: not(contains(variables['Build.SourceVersionMessage'], '[skip ci]'))
 
 - task: Bash@3
