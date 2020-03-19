@@ -105,4 +105,4 @@ steps:
     targetType: 'inline'
     script: cd D:/a/1/s/ && ls && git add --all && git commit -m "Adds ROM and screenshot from build pipeline [skip ci]." && git push origin HEAD:master
   condition: not(contains(variables['commitstatus'], '[skip ci]'))
-  # continueOnError: true
+  continueOnError: true
