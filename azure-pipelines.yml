@@ -87,8 +87,7 @@ steps:
     script: |
       current_date=echo `date +"%D %T"`
       sed 's/Screenshot/Screenshot current as of/' readme.md
-      sed a $current_date readme.md
-  continueOnError: true
+      sed a/$current_date readme.md
 
 - task: Bash@3
   displayName: 'Push ROM, screenshot, and README back to branch'
