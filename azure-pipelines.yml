@@ -6,6 +6,7 @@ pool:
 
 variables:
   status: 'fail'
+  commitstatus: 'none'
 
 steps:
 - checkout: self
@@ -13,24 +14,22 @@ steps:
 
 - task: Bash@3
   displayName: 'Check Build.SourceVersionMessage'
-  env:
-    commitmsg: $(Build.SourceVersionMessage)
   inputs:
     targetType: 'inline'
     script: |
-      echo $env:commitmsg
-      echo $(Build.SourceVersionMessage)
+      commitmsg=$(Build.SourceVersionMessage)
+      echo "##vso[task.setvariable variable=commitstatus]$commitmsg"
 
 - powershell: (new-object System.Net.WebClient).DownloadFile('http://www.nespowerpak.com/nesasm/NESASM3.zip','NESASM3.zip')
   displayName: 'Download NESASM3 for Windows'
-  condition: not(contains(variables['Build.SourceVersionMessage'], '[skip ci]'))
+  condition: not(contains(variables['commitstatus'], '[skip ci]'))
 
 - task: ExtractFiles@1
   displayName: 'Extract files'
   inputs:
     archiveFilePatterns: NESASM3.zip
     destinationFolder: NESASM3
-  condition: not(contains(variables['Build.SourceVersionMessage'], '[skip ci]'))
+  condition: not(contains(variables['commitstatus'], '[skip ci]'))
 
 - task: Bash@3
   displayName: 'Remove existing screenshot if present.'
@@ -44,7 +43,7 @@ steps:
   displayName: 'Assemble source file (.NES ROM)'
   inputs:
     script: 'cd D:\a\1\s\game && D:\a\1\s\NESASM3\NESASM3.exe D:\a\1\s\game\test.asm'
-  condition: not(contains(variables['Build.SourceVersionMessage'], '[skip ci]'))
+  condition: not(contains(variables['commitstatus'], '[skip ci]'))
 
 - task: Bash@3
   displayName: 'Check assembly status'
@@ -54,8 +53,8 @@ steps:
       result=$(cd D:/a/1/s/game && D:/a/1/s/NESASM3/NESASM3.exe D:/a/1/s/game/test.asm | grep error)
       echo $result
       echo "##vso[task.setvariable variable=status]$result"
-  condition: not(contains(variables['Build.SourceVersionMessage'], '[skip ci]'))
-      
+  condition: not(contains(variables['commitstatus'], '[skip ci]'))
+
 - task: Bash@3
   displayName: 'Fail build only if assembly fails'
   inputs:
@@ -65,7 +64,7 @@ steps:
 
 - powershell: (new-object System.Net.WebClient).DownloadFile('https://downloads.sourceforge.net/project/fceultra/Binaries/2.2.3/fceux-2.2.3-win32.zip?r=https%3A%2F%2Fsourceforge.net%2Fprojects%2Ffceultra%2Ffiles%2FBinaries%2F2.2.3%2Ffceux-2.2.3-win32.zip%2Fdownload&ts=1559878465','FCEUX.zip')
   displayName: 'Download FCEUX for Windows'
-  condition: not(contains(variables['Build.SourceVersionMessage'], '[skip ci]'))
+  condition: not(contains(variables['commitstatus'], '[skip ci]'))
 
 - task: ExtractFiles@1
   displayName: 'Extract files'
@@ -73,37 +72,37 @@ steps:
     archiveFilePatterns: FCEUX.zip
     destinationFolder: build/fceux
     cleanDestinationFolder: false
-  condition: not(contains(variables['Build.SourceVersionMessage'], '[skip ci]'))
+  condition: not(contains(variables['commitstatus'], '[skip ci]'))
 
 - powershell: Start-Process D:\a\1\s\build\fceux\fceux.exe "-lua D:\a\1\s\build\screenshot.lua D:\a\1\s\game\test.nes"
   displayName: 'Run FCEUX'
-  condition: not(contains(variables['Build.SourceVersionMessage'], '[skip ci]'))
+  condition: not(contains(variables['commitstatus'], '[skip ci]'))
 
 - task: Bash@3
   displayName: 'Confirm screenshot was created'
   inputs:
     targetType: 'inline'
     script: sleep 20 && cd D:/a/1/s/build && ls && cat screenshot.png
-  condition: not(contains(variables['Build.SourceVersionMessage'], '[skip ci]'))
+    condition: not(contains(variables['commitstatus'], '[skip ci]'))
 
 - task: Bash@3
   displayName: 'Configure git'
   inputs:
     targetType: 'inline'
     script: git config user.email "partytimehexcellent@gmail.com" && git config user.name "NES Build Pipeline"
-  condition: not(contains(variables['Build.SourceVersionMessage'], '[skip ci]'))
+  condition: not(contains(variables['commitstatus'], '[skip ci]'))
 
 - task: Bash@3
   displayName: 'Remove FCEUX and NESASM3 if present'
   inputs:
     targetType: 'inline'
     script: 'rm NESASM3.zip FCEUX.zip build/fceux/7z.dll build/fceux/auxlib.lua build/fceux/fceux.chm build/fceux/fceux.exe build/fceux/lua5.1.dll build/fceux/lua51.dll build/fceux/taseditor.chm && rm -rf build/fceux/luaScripts/ build/fceux/palettes/ build/fceux/tools/ NESASM3 && ls && cd build && ls'
-  condition: not(contains(variables['Build.SourceVersionMessage'], '[skip ci]'))
+  condition: not(contains(variables['commitstatus'], '[skip ci]'))
 
 - task: Bash@3
   displayName: 'Push screenshot back to branch'
   inputs:
     targetType: 'inline'
     script: cd D:/a/1/s/ && ls && git add --all && git commit -m "Adds ROM and screenshot from build pipeline [skip ci]." && git push origin HEAD:master
-  condition: not(contains(variables['Build.SourceVersionMessage'], '[skip ci]'))
-  continueOnError: true
+  condition: not(contains(variables['commitstatus'], '[skip ci]'))
+  # continueOnError: true
