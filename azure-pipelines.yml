@@ -65,7 +65,7 @@ steps:
     cleanDestinationFolder: false
   condition: not(contains(variables['Build.SourceVersionMessage'], '[skip ci]'))
 
-- powershell: Start-Process D:\a\1\s\build\fceux\fceux.exe "-lua D:\a\1\s\build\screenshot.lua D:\a\1\s\build\test.nes"
+- powershell: Start-Process D:\a\1\s\build\fceux\fceux.exe "-lua D:\a\1\s\build\screenshot.lua D:\a\1\s\game\test.nes"
   displayName: 'Run FCEUX'
   condition: not(contains(variables['Build.SourceVersionMessage'], '[skip ci]'))
 
