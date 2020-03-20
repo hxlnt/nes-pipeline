@@ -78,8 +78,8 @@ steps:
     targetType: 'inline'
     script: |
       current_date=`date +"%A, %B %d, %Y at %T"`
-      sed -i '$d' readme.md
-      sed -i "$aScreenshot updated $current_date" readme.md
+      sed -i '5d' readme.md
+      sed -i "5aScreenshot updated $current_date" readme.md
       cat readme.md
 
 - task: Bash@3
