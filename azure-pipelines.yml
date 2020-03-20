@@ -20,14 +20,6 @@ steps:
     archiveFilePatterns: NESASM3.zip
     destinationFolder: NESASM3
 
-# - task: Bash@3
-#   displayName: 'Remove existing screenshot if present.'
-#   inputs:
-#     targetType: 'inline'
-#     script: 'rm build/screenshot.png'
-#   condition: not(contains(variables['Build.SourceVersionMessage'], '[skip ci]'))
-#   continueOnError: true
-
 - task: CmdLine@2
   displayName: 'Assemble source file (.NES ROM)'
   inputs:
@@ -87,8 +79,7 @@ steps:
     script: |
       current_date=`date +"%A, %B %d, %Y at %T"`
       sed '$d' readme.md
-      sed "$a\ 
-      Updated $current_date" readme.md
+      sed "4aScreenshot updated $current_date" readme.md
       cat readme.md
 
 - task: Bash@3
