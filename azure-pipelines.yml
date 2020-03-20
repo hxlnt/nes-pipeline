@@ -79,7 +79,7 @@ steps:
     script: |
       current_date=`date +"%A, %B %d, %Y at %T"`
       sed -i '5d' readme.md
-      sed -i "5aScreenshot updated $current_date" readme.md
+      sed -i "5iScreenshot updated $current_date" readme.md
       cat readme.md
 
 - task: Bash@3
