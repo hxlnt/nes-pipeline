@@ -2,4 +2,4 @@
 
 ![Image](https://raw.githubusercontent.com/hxlnt/nes-pipeline/master/build/screenshot.png)
 
-Screenshot current as of now.
+Screenshot line placeholder.
