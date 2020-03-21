@@ -3,7 +3,7 @@ It's continuous integration for NES homebrew!
 
 <figure>
   <img style="image-rendering: pixelated;" alt="Screenshot" width="512" src="https://raw.githubusercontent.com/hxlnt/nes-pipeline/master/build/screenshot.png">
-<figcaption>Screenshot updated Saturday, March 21, 2020 at 23:22:30 UTC+00:00.</figcaption>
+<figcaption>Screenshot updated Saturday, March 21, 2020 at 23:30:49 UTC+00:00.</figcaption>
 </figure>
 
 # How it works
