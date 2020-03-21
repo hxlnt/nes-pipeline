@@ -89,7 +89,7 @@ steps:
     targetType: 'inline'
     script: |
       current_date=`date +"%A, %B %d, %Y at %T"`
-      sed -i "8c<figcaption>Screenshot updated $current_date UTC+00:00.</figcaption>" readme.md
+      sed -i "6c<figcaption>Screenshot updated $current_date UTC+00:00.</figcaption>" readme.md
       cat readme.md
 
 - task: Bash@3
