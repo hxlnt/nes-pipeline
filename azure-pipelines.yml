@@ -58,7 +58,7 @@ steps:
   displayName: 'Confirm screenshot was created'
   inputs:
     targetType: 'inline'
-    script: sleep 15 && cd D:/a/1/s/build && ls && cat screenshot.png
+    script: sleep 10 && cd D:/a/1/s/build && ls && cat screenshot.png
 
 - task: Bash@3
   displayName: 'Configure git'
@@ -78,8 +78,7 @@ steps:
     targetType: 'inline'
     script: |
       current_date=`date +"%A, %B %d, %Y at %T"`
-      sed -i '5d' readme.md
-      sed -i "5iScreenshot updated $current_date" readme.md
+      sed -i "5cScreenshot updated $current_date" readme.md
       cat readme.md
 
 - task: Bash@3
