@@ -27,8 +27,8 @@ steps:
     script: |
       current_date=`date +"%^b %d, %Y"`
       current_time=`date +"%0l:%M %p"`
-      sed -i "s/.db \"............\" ; Current date/.db \"$current_date\" ; Current date/" game/test.asm
-      sed -i "s/.db \"........\" ; Current time/.db \"$current_time\" ; Current time/" game/test.asm
+      sed -i "s/.db \"... .., 20..\"/.db \"$current_date\"/" game/test.asm
+      sed -i "s/.db \"..:.. .M\"/.db \"$current_time\"/" game/test.asm
       cat game/test.asm
 
 - task: CmdLine@2
