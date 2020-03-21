@@ -2,4 +2,4 @@
 
 ![Image](https://raw.githubusercontent.com/hxlnt/nes-pipeline/master/build/screenshot.png)
 
-Screenshot updated Saturday, March 21, 2020 at 00:07:54
+Screenshot and NES ROM updated Saturday, March 21, 2020 at 00:07:54
