@@ -20,6 +20,17 @@ steps:
     archiveFilePatterns: NESASM3.zip
     destinationFolder: NESASM3
 
+- task: Bash@3
+  displayName: 'Add date and time to NES source'
+  inputs:
+    targetType: 'inline'
+    script: |
+      current_date=`date +"%^b %d, %Y"`
+      current_time=`date +"%0l:%M %p"`
+      sed -i "s/.db \"............\" ; Current date/.db \"$current_date\" ; Current date/" test.asm
+      sed -i "s/.db \"........\" ; Current time/.db \"$current_time\" ; Current time/" test.asm
+      cat test.asm
+
 - task: CmdLine@2
   displayName: 'Assemble source file (.NES ROM)'
   inputs:

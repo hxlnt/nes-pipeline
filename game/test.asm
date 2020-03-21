@@ -187,17 +187,34 @@ TurnScreenOff:          ; Disable screen rendering                  ;;
 ;;;;;;;;;; 3.6 Binary data ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
                                                                     ;;
 background1:            ; First 256-tile set of background          ;;
-    .incbin "loadingscreen1.nam"                                    ;;
+    .db $00,$00,$00,$00,$00,$00,$04,$00,$00,$00,$00,$00,$00,$00,$00,$00
+    .db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$03,$00,$00,$00,$00,$00 
+    .db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00 
+    .db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+    .db "NES-PIPELINE"
+    .db $00,$00,$E0,$00,$00,$00
+    .db "MAR 21, 2020" ; Current date
+    .db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00 
+    .db $00,$03,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00 
+    .db $03,$00,$00,$00,$00,$00,$00,$00,$03,$00,$00,$00,$00,$00,$00,$00 
+    .db $00,$00,$00,$00,$03,$00,$00
+    .db "02:59 PM" ; Current time
+    .db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$04,$00,$00,$00,$00,$00 
+    .db $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$03,$00,$00 
+    .db $00,$D7,$D8,$00,$00,$B7,$00,$00,$00,$00,$00,$00,$03,$00,$00,$03 
+    .db $00,$00,$00,$04,$00,$00,$00,$00,$00,$00,$D7,$D8,$00,$00,$00,$00 
+    .db $00,$D9,$DA,$00,$00,$79,$77,$00,$00,$00,$00,$00,$00,$00,$00,$00 
+    .db $00,$00,$00,$00,$00,$B7,$77,$00,$00,$00,$D9,$DA,$00,$00,$00,$00
 background2:            ; Second 256-tile set of background         ;;
-    .incbin "loadingscreen1.nam"                                    ;;
+    .incbin "pipeline2.nam"                                    ;;
 background3:            ; Third 256-tile set of background          ;;
-    .incbin "loadingscreen1.nam"                                    ;;
+    .incbin "pipeline3.nam"                                    ;;
 background4:            ; Third 256-tile set of background          ;;
-    .incbin "loadingscreen1.nam"                                    ;;
+    .incbin "pipeline4.nam"                                    ;;
 defaultpal:             ; Default color palette                     ;;
-    .incbin "test.pal" 					        					;;
+    .incbin "pipeline.pal" 					        					;;
 attr:                   ; Color attribute table                     ;;
-    .incbin "test.atr"												;;
+    .incbin "pipeline.atr"												;;
                                                                     ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     
