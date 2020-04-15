@@ -12,16 +12,16 @@ steps:
   persistCredentials: "true"
 
 - powershell: (new-object System.Net.WebClient).DownloadFile('http://www.nespowerpak.com/nesasm/NESASM3.zip','NESASM3.zip')
-  displayName: 'Download NESASM3 for Windows'
+  displayName: 'Download NESASM3 (NES assembler) for Windows'
 
 - task: ExtractFiles@1
-  displayName: 'Extract files'
+  displayName: 'Extract NESASM3'
   inputs:
     archiveFilePatterns: NESASM3.zip
     destinationFolder: NESASM3
 
 - task: Bash@3
-  displayName: 'Add date and time to NES source'
+  displayName: 'Add current date and time to NES game (source file)'
   inputs:
     targetType: 'inline'
     script: |
@@ -32,7 +32,7 @@ steps:
       cat game/test.asm
 
 - task: CmdLine@2
-  displayName: 'Assemble source file (.NES ROM)'
+  displayName: 'Assemble source file to create NES ROM'
   inputs:
     script: 'cd D:\a\1\s\game && D:\a\1\s\NESASM3\NESASM3.exe D:\a\1\s\game\test.asm'
 
@@ -53,20 +53,20 @@ steps:
   condition: contains(variables['status'], 'error')
 
 - powershell: (new-object System.Net.WebClient).DownloadFile('https://downloads.sourceforge.net/project/fceultra/Binaries/2.2.3/fceux-2.2.3-win32.zip?r=https%3A%2F%2Fsourceforge.net%2Fprojects%2Ffceultra%2Ffiles%2FBinaries%2F2.2.3%2Ffceux-2.2.3-win32.zip%2Fdownload&ts=1559878465','FCEUX.zip')
-  displayName: 'Download FCEUX for Windows'
+  displayName: 'Download FCEUX (NES emulator) for Windows'
 
 - task: ExtractFiles@1
-  displayName: 'Extract files'
+  displayName: 'Extract FCEUX'
   inputs:
     archiveFilePatterns: FCEUX.zip
     destinationFolder: build/fceux
     cleanDestinationFolder: false
 
 - powershell: Start-Process D:\a\1\s\build\fceux\fceux.exe "-lua D:\a\1\s\build\screenshot.lua D:\a\1\s\game\test.nes"
-  displayName: 'Run FCEUX'
+  displayName: 'Open NES ROM in FCEUX and run Lua script to take screenshot'
 
 - task: Bash@3
-  displayName: 'Confirm screenshot was created'
+  displayName: 'Wait 10 seconds then confirm screenshot was created'
   inputs:
     targetType: 'inline'
     script: sleep 10 && cd D:/a/1/s/build && ls && cat screenshot.png
@@ -78,13 +78,13 @@ steps:
     script: git config user.email "partytimehexcellent@gmail.com" && git config user.name "NES Build Pipeline"
 
 - task: Bash@3
-  displayName: 'Remove FCEUX and NESASM3 if present'
+  displayName: 'Remove NESASM3 and FCEUX from build folder'
   inputs:
     targetType: 'inline'
     script: 'rm NESASM3.zip FCEUX.zip build/fceux/7z.dll build/fceux/auxlib.lua build/fceux/fceux.chm build/fceux/fceux.exe build/fceux/lua5.1.dll build/fceux/lua51.dll build/fceux/taseditor.chm && rm -rf build/fceux/luaScripts/ build/fceux/palettes/ build/fceux/tools/ NESASM3 && ls && cd build && ls'
 
 - task: Bash@3
-  displayName: 'Update readme.md'
+  displayName: 'Update caption in README.md with date and time of update'
   inputs:
     targetType: 'inline'
     script: |
@@ -93,7 +93,7 @@ steps:
       cat readme.md
 
 - task: Bash@3
-  displayName: 'Push ROM, screenshot, and README back to branch'
+  displayName: 'Commit changes and push ROM, ROM screenshot, and README back to GitHub repo (master branch)'
   inputs:
     targetType: 'inline'
     script: cd D:/a/1/s/ && ls && git add --all && git commit -m "Adds latest ROM, screenshot, and README from build pipeline. [skip ci]" && git push origin HEAD:master
