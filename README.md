@@ -8,7 +8,7 @@ It's continuous integration for NES homebrew with automagic screenshot updating!
 
 # How it works
 
-Every time code is checked in to the `master` branch, an Azure Pipelines (free tier) workflow is automatically triggered. This workflow compiles the NES ROM from source, screenshots the ROM, updates the screenshot to the README, and posts everything back to GitHub with updated timestamps.
+Every time code is checked in to the `master` branch, an Azure Pipelines (free tier) workflow is automatically triggered. This workflow compiles the NES ROM from source, screenshots the ROM, updates the screenshot in the README, and posts everything back to GitHub with updated timestamps.
 
 This example also edits the NES source on each run to add a timestamp to the NES screen itself, just to prove out the inner workings.
 
