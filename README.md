@@ -3,7 +3,7 @@ It's continuous integration for NES homebrew with automagic screenshot updating!
 
 <figure>
   <img style="image-rendering: pixelated;" alt="Screenshot" width="512" src="https://raw.githubusercontent.com/hxlnt/nes-pipeline/master/build/screenshot.png">
-<figcaption>Screenshot updated Wednesday, April 15, 2020 at 17:55:18 UTC+00:00.</figcaption>
+<figcaption>Screenshot updated Thursday, April 16, 2020 at 23:34:52 UTC+00:00.</figcaption>
 </figure>
 
 # How it works
